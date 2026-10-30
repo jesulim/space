@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import { Cctv } from 'lucide-react';
+import { Cctv, Moon, Sun } from 'lucide-react';
 import { gsap, useGSAP } from '../gsap';
 import { NAV } from '../data';
 
@@ -35,7 +35,7 @@ function Ticket({ count }) {
   );
 }
 
-export default function Nav({ activeSection, count, devtoolsOpen, onToggleDevtools, onNavigate }) {
+export default function Nav({ activeSection, count, devtoolsOpen, onToggleDevtools, theme, onToggleTheme, onNavigate }) {
   const root = useRef(null);
   const indicator = useRef(null);
   const menuBtn = useRef(null);
@@ -157,6 +157,25 @@ export default function Nav({ activeSection, count, devtoolsOpen, onToggleDevtoo
               <Cctv size={17} />
             </button>
             <button
+              type="button"
+              className="nav-theme-btn"
+              onClick={onToggleTheme}
+              aria-label={theme === 'dark' ? 'Cambiar a Tema Claro (Original)' : 'Cambiar a Tema Oscuro'}
+              title={theme === 'dark' ? 'Cambiar a Tema Claro (Original)' : 'Cambiar a Tema Oscuro'}
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Sun size={15} />
+                  <span className="theme-btn-label">Claro (Original)</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={15} />
+                  <span className="theme-btn-label">Oscuro</span>
+                </>
+              )}
+            </button>
+            <button
               ref={menuBtn}
               type="button"
               className="nav-menu-btn"
@@ -196,6 +215,14 @@ export default function Nav({ activeSection, count, devtoolsOpen, onToggleDevtoo
           </ul>
           <div className="sheet-foot">
             <Ticket count={count} />
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={onToggleTheme}
+            >
+              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+              {theme === 'dark' ? 'Tema Claro (Original)' : 'Tema Oscuro'}
+            </button>
             <button
               type="button"
               className="btn btn-secondary btn-sm"

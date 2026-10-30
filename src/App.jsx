@@ -53,6 +53,7 @@ export default function App() {
   const appRef = useRef(null);
   const piecesApi = useRef(null);
 
+  const [theme, setTheme] = useState(() => load('vibe_theme', 'dark'));
   const [cafesServidos, setCafesServidos] = useState(() => Number(load('vibe_cafes_count', 0)) || 0);
   const [isBrewing, setIsBrewing] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
@@ -69,6 +70,17 @@ export default function App() {
   const [challengeUrl, setChallengeUrl] = useState('');
   const [challengeOption, setChallengeOption] = useState('A');
   const [challengeSubmitted, setChallengeSubmitted] = useState(false);
+
+  useEffect(() => {
+    save('vibe_theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute('content', theme === 'dark' ? '#120c08' : '#fbf7f1');
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === 'dark' ? 'light' : 'dark'));
+  };
 
   useEffect(() => save('vibe_cafes_count', cafesServidos), [cafesServidos]);
   useEffect(() => save('vibe_checklist', checklist), [checklist]);
@@ -345,6 +357,8 @@ export default function App() {
         count={cafesServidos}
         devtoolsOpen={devtoolsOpen}
         onToggleDevtools={() => setDevtoolsOpen((o) => !o)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
         onNavigate={navigate}
       />
 

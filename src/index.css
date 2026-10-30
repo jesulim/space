@@ -1,7 +1,8 @@
-:root {
+:root,
+[data-theme='light'] {
   color-scheme: light;
 
-  /* Papel y tinta: tonos claros de cafetería */
+  /* Papel y tinta: tonos claros de cafetería (tema original) */
   --paper: #fbf7f1;
   --paper-2: #f4ece1;
   --paper-3: #eadfcf;
@@ -43,6 +44,43 @@
 
   --nav-h: 76px;
   --gutter: clamp(16px, 4vw, 40px);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Café espresso y crema: paleta profunda de cafetería nocturna */
+  --paper: #120c08;
+  --paper-2: #1b120c;
+  --paper-3: #261a12;
+  --card: #1e150f;
+  --ink: #fcf6ee;
+  --ink-2: #cfbdae;
+  --ink-3: #9e8a7c;
+  --line: rgba(245, 230, 215, 0.12);
+  --line-strong: rgba(245, 230, 215, 0.24);
+
+  /* Caramelo dorado y ámbar para destacar sobre el grano tostado */
+  --accent: #f59e0b;
+  --accent-strong: #fbbf24;
+  --accent-soft: rgba(245, 158, 11, 0.16);
+
+  /* Un color por pieza adaptado para modo oscuro con alto contraste */
+  --html: #fb923c;
+  --html-soft: rgba(251, 146, 60, 0.16);
+  --css: #38bdf8;
+  --css-soft: rgba(56, 189, 248, 0.16);
+  --react: #22d3ee;
+  --react-soft: rgba(34, 211, 238, 0.16);
+  --storage: #c084fc;
+  --storage-soft: rgba(192, 132, 252, 0.16);
+  --github: #e2e8f0;
+  --github-soft: rgba(226, 232, 240, 0.14);
+  --vercel: #4ade80;
+  --vercel-soft: rgba(74, 222, 128, 0.16);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 20px 48px -10px rgba(0, 0, 0, 0.7);
 }
 
 *,
