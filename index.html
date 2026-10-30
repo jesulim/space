@@ -1,17 +1,56 @@
 <!doctype html>
-<html lang="es">
+<html class="dark" lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 8h1a4 4 0 1 1 0 8h-1'/><path d='M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z'/><line x1='6' x2='6' y1='2' y2='4'/><line x1='10' x2='10' y1='2' y2='4'/><line x1='14' x2='14' y1='2' y2='4'/></svg>" />
+    <link rel="icon" type="image/svg+xml" href="/logo-cafeteria.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>La Cafetería del Vibe Coder | Sesión 1 - American Space</title>
+    <title>Cafetería Web Coder • Vibe Coding</title>
     <meta name="description" content="Aprende los cimientos de una aplicación web moderna (HTML, CSS, React, GitHub, Vercel) con la analogía de la cafetería y Vibe Coding." />
-    <!-- Google Fonts -->
+    <!-- Google Fonts & Material Symbols -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#131317",
+              "surface": "#131317",
+              "espresso-surface": "#16151B",
+              "espresso-card": "#1E1C24",
+              "surface-container": "#1f1f23",
+              "surface-container-high": "#2a292e",
+              "surface-container-highest": "#353439",
+              "surface-container-low": "#1b1b1f",
+              "surface-container-lowest": "#0e0e12",
+              "primary": "#ffc174",
+              "primary-container": "#f59e0b",
+              "on-primary-container": "#452600",
+              "amber-glow": "#FBBF24",
+              "amber-deep": "#D97706",
+              "text-primary": "#F8FAFC",
+              "text-muted": "#94A3B8",
+              "on-surface": "#e4e1e7",
+              "on-surface-variant": "#d8c3ad",
+              "neon-emerald": "#10B981",
+              "neon-cyan": "#06B6D4",
+              "neon-violet": "#8B5CF6",
+              "outline": "#2e2d35"
+            },
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"]
+            }
+          }
+        }
+      };
+    </script>
   </head>
-  <body>
+  <body class="bg-background text-on-surface font-sans antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

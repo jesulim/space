@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="amberGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="cupSurface" x1="8" y1="14" x2="28" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2A292E"/>
+      <stop offset="100%" stop-color="#16151B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background badge -->
+  <rect x="2" y="2" width="36" height="36" rx="10" fill="#1E1C24" stroke="url(#amberGrad)" stroke-width="1.5"/>
+  <!-- Steam / Code sparks -->
+  <path d="M13 8.5L11 10.5L13 12.5" stroke="#06B6D4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M23 8.5L25 10.5L23 12.5" stroke="#06B6D4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M19 7.5L17 13.5" stroke="#FBBF24" stroke-width="1.7" stroke-linecap="round"/>
+  <!-- Coffee Cup Body -->
+  <path d="M9 16H27V23C27 27.4183 23.4183 31 19 31H17C12.5817 31 9 27.4183 9 23V16Z" fill="url(#cupSurface)" stroke="url(#amberGrad)" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Cup Handle -->
+  <path d="M27 18H29.5C31.433 18 33 19.567 33 21.5C33 23.433 31.433 25 29.5 25H27" stroke="url(#amberGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Terminal Prompt inside cup -->
+  <path d="M14.5 21.5L17 23.5L14.5 25.5" stroke="#FBBF24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="19" y1="25.5" x2="22" y2="25.5" stroke="#10B981" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+
