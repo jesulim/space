@@ -13,9 +13,11 @@
     "@gsap/react": "^2.1.2",
     "canvas-confetti": "^1.9.4",
     "gsap": "^3.15.0",
+    "lottie-web": "^5.13.0",
     "lucide-react": "^1.62.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",

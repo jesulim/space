@@ -12,6 +12,12 @@ import {
   Hammer,
   Wrench,
 } from 'lucide-react';
+import photoOwner from './assets/photos/owner.webp';
+import photoPlans from './assets/photos/plans.webp';
+import photoCamera from './assets/photos/camera.webp';
+import photoMeeting from './assets/photos/meeting.webp';
+import photoStorefront from './assets/photos/storefront.webp';
+import photoTools from './assets/photos/tools.webp';
 
 export const NAV = [
   { id: 'idea', label: 'La idea', hint: 'antes y ahora' },
@@ -120,6 +126,7 @@ export const ROLES = [
     icon: Coffee,
     cafe: 'El dueño del local',
     cafeLine: 'Tiene la visión y dirige la obra.',
+    photo: { src: photoOwner, alt: 'Una barista detrás de la barra de su cafetería' },
     web: 'Tú, el vibe coder',
     webLine: 'Decides qué construir y para quién.',
   },
@@ -129,6 +136,7 @@ export const ROLES = [
     icon: Bot,
     cafe: 'La constructora',
     cafeLine: 'Levanta el local con tus planos.',
+    photo: { src: photoPlans, alt: 'Un arquitecto dibujando planos con lápiz y regla' },
     web: 'La IA',
     webLine: 'Construye la app a partir de tus prompts.',
   },
@@ -138,6 +146,7 @@ export const ROLES = [
     icon: Cctv,
     cafe: 'Las cámaras de seguridad',
     cafeLine: 'Ves todo lo que pasa adentro.',
+    photo: { src: photoCamera, alt: 'Una cámara de seguridad blanca en una pared' },
     web: 'Chrome DevTools',
     webLine: 'Clic derecho → Inspeccionar.',
   },
@@ -173,6 +182,7 @@ export const TOOLS = [
     icon: Compass,
     cafe: 'Los asesores de negocio',
     cafeLine: 'Te ayudan a aterrizar la idea.',
+    photo: { src: photoMeeting, alt: 'Dos personas conversando un plan con café y una laptop' },
     web: 'Consultores',
     webLine: 'Planear la idea y escribir el prompt.',
     items: ['ChatGPT', 'Claude', 'Gemini'],
@@ -183,6 +193,7 @@ export const TOOLS = [
     icon: Hammer,
     cafe: 'La constructora llave en mano',
     cafeLine: 'Te entrega el local listo.',
+    photo: { src: photoStorefront, alt: 'Un local nuevo con las puertas de vidrio abiertas' },
     web: 'Constructores en el navegador',
     webLine: 'Del prompt a la app, sin instalar nada.',
     items: ['v0', 'Bolt.new', 'Lovable'],
@@ -193,6 +204,7 @@ export const TOOLS = [
     icon: Wrench,
     cafe: 'El taller de remodelación',
     cafeLine: 'Arreglos finos, pieza por pieza.',
+    photo: { src: photoTools, alt: 'Herramientas de carpintería sobre una mesa de madera' },
     web: 'Editores con agentes',
     webLine: 'Cambios precisos en tu computadora.',
     items: ['Cursor', 'Windsurf', 'VS Code + Copilot'],
@@ -260,3 +272,20 @@ Incluye las siguientes secciones con un diseño moderno, cálido e intuitivo, to
 3. Las 6 Piezas de la Cafetería (Tarjetas interactivas): HTML (Muros, Mesas y Carteles), CSS / Tailwind (Diseño de Interiores, Pintura y Luces), React / JavaScript (El Barista, Estaciones Modulares y Pizarra de Estado), Persistencia / LocalStorage (El Almacén con Llave que no se borra al recargar), GitHub (La Bóveda de Planos con Máquina del Tiempo) y Vercel (El Local Abierto en la Avenida Principal con link público).
 4. Mapa de Herramientas de Vibe Coding: Pestañas interactivas explicando Consultores (ChatGPT, Claude, Gemini), Constructores en Navegador (v0, Bolt, Lovable) y Editores con Agentes (Cursor, Windsurf).
 5. Checklist Interactivo de 'Mi Primer Deploy': Lista de pasos (Crear prompt, Generar app, Subir a GitHub, Publicar en Vercel, Compartir link) que el alumno pueda marcar y que quede guardada en el navegador.`;
+
+// Recursos externos usados en la página (licencia de Unsplash y Lottie Simple License)
+export const CREDITS = {
+  photos: [
+    { name: 'Nathan Dumlao', url: 'https://unsplash.com/photos/top-view-photography-of-heart-latte-coffee-XOhI_kW_TaM' },
+    { name: 'Brooke Balentine', url: 'https://unsplash.com/photos/a-barista-stands-behind-a-counter-in-a-coffee-shop-nBR694hNslc' },
+    { name: 'Daniel McCullough', url: 'https://unsplash.com/photos/an-architect-working-on-a-draft-with-a-pencil-and-ruler-HtBlQdxfG9k' },
+    { name: 'Alan J. Hendry', url: 'https://unsplash.com/photos/white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0' },
+    { name: 'Vitaly Gariev', url: 'https://unsplash.com/photos/two-businessmen-in-a-meeting-with-laptop-and-laptop-1gMIeDTl2u8' },
+    { name: 'Trista Le', url: 'https://unsplash.com/photos/modern-black-storefront-with-open-glass-doors-PyHrr8nZXvs' },
+    { name: 'Dominik Scythe', url: 'https://unsplash.com/photos/hand-tools-on-top-of-table-v8vz-Roj8zo' },
+  ],
+  animations: [
+    { name: 'Santiago Manuel Nogueira', url: 'https://lottiefiles.com/free-animation/smoke-steam-TmcZrUsVLT' },
+    { name: 'Sebastián Nieto', url: 'https://lottiefiles.com/free-animation/cup-of-coffee-cnMpFnUDxV' },
+  ],
+};

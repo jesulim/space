@@ -619,24 +619,42 @@
   }
 }
 
-.bean {
+/* Luces cálidas que se desplazan lento detrás de la portada */
+.hero-glow {
   position: absolute;
-  width: 34px;
-  height: auto;
-  opacity: 0.6;
+  border-radius: 50%;
+  filter: blur(70px);
   pointer-events: none;
+  will-change: transform;
 }
 
-@media (max-width: 900px) {
-  .bean-1,
-  .bean-2 {
-    display: none;
+.hero-glow-1 {
+  top: -160px;
+  right: -120px;
+  width: 560px;
+  height: 560px;
+  background: rgba(249, 205, 160, 0.7);
+  animation: glow-a 16s ease-in-out infinite alternate;
+}
+
+.hero-glow-2 {
+  bottom: -180px;
+  left: -140px;
+  width: 460px;
+  height: 460px;
+  background: rgba(238, 206, 176, 0.75);
+  animation: glow-b 20s ease-in-out infinite alternate;
+}
+
+@keyframes glow-a {
+  to {
+    transform: translate(-140px, 100px) scale(1.15);
   }
 }
 
-@media (max-width: 600px) {
-  .bean-3 {
-    display: none;
+@keyframes glow-b {
+  to {
+    transform: translate(160px, -80px) scale(0.9);
   }
 }
 
@@ -645,6 +663,48 @@
   justify-self: end;
   width: 100%;
   max-width: 420px;
+}
+
+.hero-menu-wrap {
+  position: relative;
+}
+
+.hero-cup {
+  position: absolute;
+  z-index: 2;
+  left: -170px;
+  bottom: -72px;
+  width: clamp(150px, 15vw, 210px);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.hero-cup-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 26px 40px -18px rgba(42, 30, 22, 0.55), 0 4px 10px rgba(42, 30, 22, 0.18);
+}
+
+/* El vapor sale de la taza y sube por encima del menú */
+.hero-steam {
+  position: absolute;
+  left: 50%;
+  bottom: 52%;
+  width: 70%;
+  height: 150%;
+  translate: -50% 0;
+  filter: blur(1.5px);
+}
+
+@media (max-width: 900px) {
+  .hero-cup {
+    top: -56px;
+    right: -10px;
+    bottom: auto;
+    left: auto;
+    width: 116px;
+  }
 }
 
 .menu-card {
@@ -797,6 +857,34 @@
   background: var(--paper-3);
 }
 
+.arow-cafe.has-photo {
+  display: grid;
+  grid-template-columns: clamp(104px, 11vw, 148px) 1fr;
+  align-items: start;
+  column-gap: clamp(16px, 2vw, 24px);
+}
+
+.arow-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.arow-photo {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px -14px rgba(42, 30, 22, 0.45);
+}
+
+.arow-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) sepia(0.06);
+}
+
 .arow-kicker {
   display: inline-flex;
   align-items: center;
@@ -893,6 +981,15 @@
     border-right: 1px solid var(--line);
     border-bottom: 0;
     padding: 20px 20px 32px;
+  }
+
+  .arow-cafe.has-photo {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  .arow-photo {
+    aspect-ratio: 16 / 9;
   }
 
   .arow-web,
@@ -1849,62 +1946,17 @@
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 84px;
+  height: 84px;
   margin-bottom: 14px;
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent);
 }
 
-.demo-steam {
+.demo-cup-anim {
   position: absolute;
-  top: -6px;
-  width: 3px;
-  height: 14px;
-  border-radius: 2px;
-  background: #d9c3ad;
-  opacity: 0;
-}
-
-.demo-steam:nth-child(1) {
-  left: 22px;
-}
-
-.demo-steam:nth-child(2) {
-  left: 30px;
-  animation-delay: 0.15s;
-}
-
-.demo-steam:nth-child(3) {
-  left: 38px;
-  animation-delay: 0.3s;
-}
-
-.demo-cup.is-brewing .demo-steam {
-  animation: rise 0.9s ease-out;
-}
-
-.demo-cup.is-brewing .demo-steam:nth-child(2) {
-  animation-delay: 0.12s;
-}
-
-.demo-cup.is-brewing .demo-steam:nth-child(3) {
-  animation-delay: 0.24s;
-}
-
-@keyframes rise {
-  0% {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-18px);
-  }
+  inset: -22px;
 }
 
 .demo-h1 {
@@ -2787,6 +2839,80 @@
   }
 }
 
+/* ============ Cierre con foto ============ */
+.band {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(380px, 62vh, 580px);
+  overflow: hidden;
+  text-align: center;
+  color: #fff6ea;
+}
+
+.band-media {
+  position: absolute;
+  inset: -16% 0;
+}
+
+.band-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.band-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 70% at 50% 50%, rgba(42, 30, 22, 0.25), rgba(42, 30, 22, 0.65)),
+    linear-gradient(180deg, rgba(42, 30, 22, 0.2), rgba(42, 30, 22, 0.45));
+}
+
+.band-inner {
+  position: relative;
+  z-index: 2;
+  padding-block: 96px;
+}
+
+.band-quote {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 5.6rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.band-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.band-quote em {
+  display: inline-block;
+  font-style: italic;
+  color: #f4c592;
+}
+
+.band-sub {
+  margin-top: 18px;
+  font-size: 1.05rem;
+  color: rgba(255, 246, 234, 0.85);
+}
+
+.footer-credits {
+  flex-basis: 100%;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.footer-credits a {
+  color: var(--ink-2);
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 2px;
+}
+
 /* ============ Pie ============ */
 .footer {
   padding: 48px 0 64px;
@@ -2946,6 +3072,190 @@
   }
 }
 
+/* ============ Ambiente: papel, granos, manchas y bordes líquidos ============ */
+.ambient-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Textura de papel muy sutil sobre toda la página */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.21 0 0 0 0 0.13 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+  transform: translateZ(0);
+}
+
+.section > .container,
+.footer > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.decor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.decor-layer,
+.decor-mouse {
+  position: absolute;
+  inset: 0;
+}
+
+.decor-item {
+  position: absolute;
+  will-change: transform;
+}
+
+.decor-art,
+.decor-art svg {
+  width: 100%;
+  height: 100%;
+}
+
+.decor-art svg {
+  overflow: visible;
+}
+
+/* Granos 3D: por encima del fondo de las secciones y por debajo del contenido */
+.bean-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.bean-canvas.is-ready {
+  opacity: 1;
+}
+
+.ps-pin,
+.ps-list,
+.hero-scroll {
+  z-index: 1;
+}
+
+.ps-pin,
+.ps-list {
+  position: relative;
+}
+
+.stain-ring,
+.stain-ring-2 {
+  fill: none;
+  stroke: #8c5a36;
+  stroke-linecap: round;
+}
+
+.stain-ring {
+  stroke-opacity: 0.3;
+  stroke-width: 3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.stain-ring-2 {
+  stroke-opacity: 0.16;
+  stroke-width: 1.4;
+  stroke-dasharray: 0.64 0.36;
+  stroke-dashoffset: 0.2;
+}
+
+.stain-drop {
+  fill: #8c5a36;
+  fill-opacity: 0.22;
+}
+
+@media (max-width: 760px) {
+  .decor-item.no-mobile {
+    display: none;
+  }
+}
+
+/* Borde líquido de las secciones color latte */
+.footer {
+  position: relative;
+}
+
+.wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 48px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.wave-top {
+  bottom: calc(100% - 1px);
+}
+
+.wave-bottom {
+  top: calc(100% - 1px);
+  transform: scaleY(-1);
+}
+
+/* Cuelga dentro de la banda de foto, del color del papel */
+.wave-inside-top {
+  top: -1px;
+  z-index: 2;
+  transform: scaleY(-1);
+  --wave-fill: var(--paper);
+}
+
+/* Sobre la foto oscura, la ola trasera translúcida se vería gris: va sólida */
+.wave.wave-inside-top .wave-back,
+.footer .wave .wave-back {
+  opacity: 1;
+}
+
+.wave svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4320px;
+  max-width: none;
+  height: 48px;
+  animation: wave-x 26s linear infinite;
+}
+
+.wave .wave-back {
+  opacity: 0.5;
+  animation-duration: 38s;
+  animation-direction: reverse;
+}
+
+.wave path {
+  fill: var(--wave-fill, var(--paper-2));
+}
+
+@keyframes wave-x {
+  to {
+    transform: translateX(-1440px);
+  }
+}
+
+/* La historia fijada deja espacio para la ola de la sección siguiente */
+@media (min-width: 960px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  .pieces {
+    padding-bottom: 48px;
+  }
+}
+
 /* ============ Cursor de café ============ */
 .cc {
   position: fixed;
@@ -2976,7 +3286,7 @@ html.coffee-cursor [contenteditable='true'] {
 .cc-cup-pos,
 .cc-ripple,
 .cc-drop,
-.cc-puff {
+.cc-drip {
   position: absolute;
   top: 0;
   left: 0;
@@ -3041,6 +3351,7 @@ html.coffee-cursor [contenteditable='true'] {
 .cc-rim {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -3050,6 +3361,7 @@ html.coffee-cursor [contenteditable='true'] {
 }
 
 .cc-coffee {
+  position: relative;
   display: grid;
   place-items: center;
   width: 17px;
@@ -3074,13 +3386,24 @@ html.coffee-cursor [contenteditable='true'] {
   transform: none;
 }
 
-.cc-puff {
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
+.cc-drip {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(176, 140, 106, 0.75) 0%, rgba(176, 140, 106, 0) 70%);
+  background: #6b4127;
   opacity: 0;
+}
+
+/* Reflejo de la crema: se mueve más que el café y da sensación de líquido */
+.cc-crema {
+  position: absolute;
+  top: 3px;
+  left: 3.5px;
+  width: 7px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: rgba(240, 206, 166, 0.6);
 }
 
 .cc-ripple {

@@ -6,10 +6,11 @@ const CURSOR_QUERY = '(hover: hover) and (pointer: fine) and (prefers-reduced-mo
 const INTERACTIVE = 'a, button, [role="button"], [role="tab"], summary, label';
 const TEXT_FIELD = 'input, textarea, select, [contenteditable="true"]';
 const CUP_OFFSET = { x: 24, y: 26 };
-const PUFFS = 14;
 const DROPS = 7;
+const DRIPS = 10;
 
-// El puntero es un grano de café (preciso) y una tacita lo acompaña soltando vapor.
+// El puntero es un grano de café (preciso) y una tacita lo acompaña:
+// el café se mueve dentro de la taza y, si vas rápido, se derrama.
 export default function CoffeeCursor() {
   const root = useRef(null);
 
@@ -23,9 +24,11 @@ export default function CoffeeCursor() {
         const bean = el.querySelector('.cc-bean');
         const cupPos = el.querySelector('.cc-cup-pos');
         const cup = el.querySelector('.cc-cup');
+        const coffee = el.querySelector('.cc-coffee');
+        const crema = el.querySelector('.cc-crema');
         const ripple = el.querySelector('.cc-ripple');
-        const puffs = gsap.utils.toArray('.cc-puff', el);
         const drops = gsap.utils.toArray('.cc-drop', el);
+        const drips = gsap.utils.toArray('.cc-drip', el);
         const { random, clamp } = gsap.utils;
 
         html.classList.add('coffee-cursor');
@@ -36,14 +39,21 @@ export default function CoffeeCursor() {
         const cupX = gsap.quickTo(cupPos, 'x', { duration: 0.45, ease: 'power3.out' });
         const cupY = gsap.quickTo(cupPos, 'y', { duration: 0.45, ease: 'power3.out' });
         const tilt = gsap.quickSetter(cupPos, 'rotation', 'deg');
+        // El líquido se queda atrás al moverse y rebota al frenar
+        const slosh = { ease: 'elastic.out(1, 0.32)', duration: 1.1 };
+        const coffeeX = gsap.quickTo(coffee, 'x', slosh);
+        const coffeeY = gsap.quickTo(coffee, 'y', slosh);
+        const cremaX = gsap.quickTo(crema, 'x', slosh);
+        const cremaY = gsap.quickTo(crema, 'y', slosh);
 
         const pointer = { x: 0, y: 0 };
         let moved = false;
         let visible = false;
         let hovering = false;
         let overField = false;
-        let lastPuff = { x: 0, y: 0, t: 0 };
-        let puffIndex = 0;
+        let prev = { x: 0, y: 0 };
+        let lastDrip = 0;
+        let dripIndex = 0;
 
         const show = (on) => {
           if (on === visible) return;
@@ -59,19 +69,21 @@ export default function CoffeeCursor() {
           gsap.to(bean, { scale: on ? 1.3 : 1, duration: 0.3, ease: 'power2.out' });
         };
 
-        const puff = (x, y) => {
-          const p = puffs[puffIndex++ % puffs.length];
-          const sx = x + random(-5, 5);
+        // Una gotita sale por el borde opuesto al movimiento y cae
+        const drip = (x, y, dx, dy) => {
+          const d = drips[dripIndex++ % drips.length];
+          const sx = x + dx * 13;
+          const sy = y + dy * 13;
           gsap.fromTo(
-            p,
-            { x: sx, y, scale: 0.5, autoAlpha: 0.65 },
+            d,
+            { x: sx, y: sy, scale: random(0.7, 1.1), autoAlpha: 0.95 },
             {
-              x: sx + random(-12, 12),
-              y: y - random(28, 46),
-              scale: random(1.4, 2.1),
+              x: sx + dx * random(6, 16),
+              y: sy + random(34, 60),
+              scale: 0.35,
               autoAlpha: 0,
-              duration: random(0.9, 1.4),
-              ease: 'power1.out',
+              duration: random(0.55, 0.8),
+              ease: 'power2.in',
               overwrite: true,
             },
           );
@@ -137,18 +149,28 @@ export default function CoffeeCursor() {
           gsap.fromTo(bean, { scale: 0.7 }, { scale: hovering ? 1.3 : 1, duration: 0.4, ease: 'back.out(3)', overwrite: true });
         };
 
-        // La taza se inclina según cuánto se queda atrás y suelta vapor al moverse
+        // La taza se inclina según cuánto se queda atrás; el café se mueve adentro
         const tick = () => {
           if (!visible) return;
           const cx = gsap.getProperty(cupPos, 'x');
           const cy = gsap.getProperty(cupPos, 'y');
+          const vx = cx - prev.x;
+          const vy = cy - prev.y;
+          prev = { x: cx, y: cy };
           tilt(clamp(-24, 24, (pointer.x + CUP_OFFSET.x - cx) * 0.45));
 
+          const ox = clamp(-3.2, 3.2, -vx * 0.45);
+          const oy = clamp(-3.2, 3.2, -vy * 0.45);
+          coffeeX(ox);
+          coffeeY(oy);
+          cremaX(ox * 1.7);
+          cremaY(oy * 1.7);
+
+          const speed = Math.hypot(vx, vy);
           const now = performance.now();
-          const travelled = Math.hypot(cx - lastPuff.x, cy - lastPuff.y);
-          if ((travelled > 22 && now - lastPuff.t > 45) || (hovering && now - lastPuff.t > 170)) {
-            lastPuff = { x: cx, y: cy, t: now };
-            puff(cx, cy - 12);
+          if (speed > 14 && now - lastDrip > 110) {
+            lastDrip = now;
+            drip(cx, cy, -vx / speed, -vy / speed);
           }
         };
 
@@ -174,8 +196,8 @@ export default function CoffeeCursor() {
 
   return (
     <div ref={root} className="cc" aria-hidden="true">
-      {Array.from({ length: PUFFS }, (_, i) => (
-        <span key={`p${i}`} className="cc-puff" />
+      {Array.from({ length: DRIPS }, (_, i) => (
+        <span key={`g${i}`} className="cc-drip" />
       ))}
 
       <div className="cc-cup-pos">
@@ -183,6 +205,7 @@ export default function CoffeeCursor() {
           <span className="cc-handle" />
           <span className="cc-rim">
             <span className="cc-coffee">
+              <span className="cc-crema" />
               <span className="cc-art">♥</span>
             </span>
           </span>

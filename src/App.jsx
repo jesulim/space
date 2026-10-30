@@ -14,14 +14,20 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK, NAV_OFFSET, scrollToId } from './gsap';
-import { CHECKLIST, LAB_STEPS, MASTER_PROMPT, NAV, PIECES, RECIPE, ROLES, TOOLS } from './data';
+import { CHECKLIST, CREDITS, LAB_STEPS, MASTER_PROMPT, NAV, PIECES, RECIPE, ROLES, TOOLS } from './data';
+import { AmbientDefs, Decor, Wave } from './components/Ambient';
 import AnalogyRow from './components/AnalogyRow';
+import BeanCanvas from './components/BeanCanvas';
 import CoffeeCursor from './components/CoffeeCursor';
 import DevToolsDrawer from './components/DevToolsDrawer';
 import Mostrador from './components/Mostrador';
 import Nav from './components/Nav';
 import PiecesStory from './components/PiecesStory';
+import Lottie from './components/Lottie';
 import SectionHead from './components/SectionHead';
+import { DECOR } from './decor';
+import latteCup from './assets/photos/latte-cup.webp';
+import beansBand from './assets/photos/beans-band.webp';
 import './App.css';
 
 const CONFETTI_COLORS = ['#A8531B', '#E2C29E', '#F4B860', '#2B8A3E', '#FFFFFF'];
@@ -41,15 +47,6 @@ function save(key, value) {
   } catch {
     // Sin almacenamiento disponible (modo privado): la app sigue funcionando
   }
-}
-
-function Bean({ className, style }) {
-  return (
-    <svg className={`bean ${className}`} style={style} viewBox="0 0 40 56" aria-hidden="true">
-      <ellipse cx="20" cy="28" rx="17" ry="25" fill="#D3AC88" />
-      <path d="M20 5 C 11 20, 29 36, 20 51" stroke="#A57A55" strokeWidth="3" fill="none" strokeLinecap="round" />
-    </svg>
-  );
 }
 
 export default function App() {
@@ -166,19 +163,38 @@ export default function App() {
           .from('.menu-card', { y: 70, rotate: 7, autoAlpha: 0, duration: 1.1 }, 0.25)
           .from('.menu-row', { x: -14, autoAlpha: 0, duration: 0.5, stagger: 0.07 }, 0.75)
           .from('.menu-leader', { scaleX: 0, duration: 0.6, stagger: 0.07 }, 0.85)
-          .from('.bean', { scale: 0, autoAlpha: 0, duration: 0.8, stagger: 0.08, ease: 'back.out(2)' }, 0.4);
+          .from('.hero-cup', { y: 40, scale: 0.7, rotate: -30, autoAlpha: 0, duration: 1.2, ease: 'back.out(1.6)' }, 0.9);
+        gsap.to('.hero-cup-img', { rotation: 360, duration: 140, ease: 'none', repeat: -1 });
 
         // Portada: parallax al salir
         const heroScroll = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
         gsap.to('.hero-copy', { yPercent: -16, autoAlpha: 0.25, ease: 'none', scrollTrigger: heroScroll });
         gsap.to('.hero-menu-wrap', { y: -110, rotate: 4, ease: 'none', scrollTrigger: heroScroll });
-        gsap.utils.toArray('.bean').forEach((bean, i) => {
-          gsap.to(bean, {
-            y: -(140 + i * 60),
-            rotate: (i % 2 ? -1 : 1) * (120 + i * 30),
-            ease: 'none',
-            scrollTrigger: { ...heroScroll, scrub: 0.6 },
-          });
+
+        // Ambiente: las manchas se mueven un poco con el scroll y se dibujan al aparecer
+        gsap.utils.toArray('.decor-layer').forEach((layer) => {
+          const shift = [0, 30, 70, 130][Number(layer.dataset.depth)];
+          gsap.fromTo(
+            layer,
+            { y: shift },
+            {
+              y: -shift,
+              ease: 'none',
+              scrollTrigger: { trigger: layer.closest('section, footer'), start: 'top bottom', end: 'bottom top', scrub: true },
+            },
+          );
+        });
+        gsap.utils.toArray('.decor-stain').forEach((stain) => {
+          gsap
+            .timeline({ scrollTrigger: { trigger: stain, start: 'top 90%', once: true } })
+            .from(stain.querySelector('.stain-fill'), { autoAlpha: 0, duration: 1.4 })
+            .fromTo(
+              stain.querySelector('.stain-ring'),
+              { strokeDashoffset: 1 },
+              { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut' },
+              0,
+            )
+            .from(stain.querySelectorAll('.stain-ring-2, .stain-drop'), { autoAlpha: 0, duration: 0.8, stagger: 0.15 }, 1);
         });
 
         // Bloques que aparecen al entrar en pantalla
@@ -213,6 +229,26 @@ export default function App() {
               { scale: 0, rotate: -180, autoAlpha: 0, duration: 0.6, ease: 'back.out(2.2)' },
               '<0.3',
             );
+        });
+        gsap.utils.toArray('.arow-photo').forEach((photo) => {
+          gsap
+            .timeline({ scrollTrigger: { trigger: photo, start: 'top 85%', once: true } })
+            .from(photo, { clipPath: 'inset(0% 0% 100% 0% round 16px)', duration: 1, ease: 'power3.inOut' })
+            .from(photo.querySelector('img'), { scale: 1.3, duration: 1.6, ease: 'power2.out' }, 0);
+        });
+
+        // Banda de cierre: la foto se desplaza más lento que la página y el texto sube
+        gsap.fromTo(
+          '.band-media',
+          { yPercent: -12 },
+          { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } },
+        );
+        gsap.from('.band-line', {
+          yPercent: 110,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.band', start: 'top 70%', once: true },
         });
 
         // Antes / ahora: se tacha el albañil mientras haces scroll
@@ -275,6 +311,25 @@ export default function App() {
         document.querySelectorAll('.recipe-step').forEach((s) => s.classList.add('is-active'));
       });
 
+      // Con mouse, las manchas siguen un poco al puntero
+      mm.add(`${MOTION_OK} and (hover: hover) and (pointer: fine)`, () => {
+        const movers = gsap.utils.toArray('.decor-mouse').map((el) => ({
+          k: Number(el.dataset.depth) * 9,
+          x: gsap.quickTo(el, 'x', { duration: 1.4, ease: 'power3.out' }),
+          y: gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3.out' }),
+        }));
+        const onMove = (e) => {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          movers.forEach((m) => {
+            m.x(-nx * m.k * 2);
+            m.y(-ny * m.k * 2);
+          });
+        };
+        window.addEventListener('pointermove', onMove, { passive: true });
+        return () => window.removeEventListener('pointermove', onMove);
+      });
+
       document.fonts?.ready.then(() => ScrollTrigger.refresh());
     },
     { scope: appRef },
@@ -282,6 +337,9 @@ export default function App() {
 
   return (
     <div className="app" ref={appRef}>
+      <AmbientDefs />
+      <BeanCanvas />
+      <div className="grain" aria-hidden="true" />
       <Nav
         activeSection={activeSection}
         count={cafesServidos}
@@ -293,10 +351,9 @@ export default function App() {
       <main>
         {/* 00 · PORTADA */}
         <section className="hero" id="inicio">
-          <Bean className="bean-1" style={{ top: '18%', left: '4%' }} />
-          <Bean className="bean-2" style={{ top: '70%', left: '42%', width: 26 }} />
-          <Bean className="bean-3" style={{ top: '12%', right: '6%', width: 22 }} />
-          <Bean className="bean-4" style={{ bottom: '10%', right: '14%', width: 30 }} />
+          <span className="hero-glow hero-glow-1" aria-hidden="true" />
+          <span className="hero-glow hero-glow-2" aria-hidden="true" />
+          <Decor items={DECOR.hero} />
 
           <div className="container hero-grid">
             <div className="hero-copy">
@@ -351,6 +408,10 @@ export default function App() {
                 </ul>
                 <p className="menu-foot">Tú diriges. La IA construye.</p>
               </div>
+              <div className="hero-cup" aria-hidden="true">
+                <Lottie className="hero-steam" load={() => import('./assets/lottie/steam.json')} speed={0.7} />
+                <img className="hero-cup-img" src={latteCup} alt="" width="520" height="520" decoding="async" />
+              </div>
             </div>
           </div>
 
@@ -361,6 +422,7 @@ export default function App() {
 
         {/* 01 · LA IDEA */}
         <section className="section" id="idea">
+          <Decor items={DECOR.idea} />
           <div className="container">
             <SectionHead
               num="01"
@@ -416,6 +478,7 @@ export default function App() {
 
         {/* 04 · EL EQUIPO */}
         <section className="section" id="equipo">
+          <Decor items={DECOR.equipo} />
           <div className="container">
             <SectionHead
               num="04"
@@ -453,6 +516,8 @@ export default function App() {
 
         {/* 05 · LA RECETA */}
         <section className="section alt" id="receta">
+          <Wave position="top" />
+          <Decor items={DECOR.receta} />
           <div className="container">
             <SectionHead
               num="05"
@@ -534,10 +599,12 @@ export default function App() {
               {promptOpen && <pre className="master-pre">{MASTER_PROMPT}</pre>}
             </div>
           </div>
+          <Wave position="bottom" />
         </section>
 
         {/* 06 · EL DEPLOY */}
         <section className="section" id="deploy">
+          <Decor items={DECOR.deploy} />
           <div className="container">
             <SectionHead
               num="06"
@@ -610,6 +677,7 @@ export default function App() {
 
         {/* 07 · EL RETO */}
         <section className="section" id="reto">
+          <Decor items={DECOR.reto} />
           <div className="container">
             <div className="reto-card" data-reveal>
               <span className="kicker">
@@ -674,9 +742,28 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* CIERRE: foto real de granos con parallax */}
+        <section className="band" aria-label="Cierre">
+          <div className="band-media">
+            <img src={beansBand} alt="Granos de café tostado" width="2000" height="958" loading="lazy" decoding="async" />
+          </div>
+          <div className="band-shade" />
+          <Wave position="inside-top" />
+          <div className="container band-inner">
+            <p className="band-quote">
+              <span className="band-line">Tú diriges.</span>
+              <span className="band-line">
+                <em>La IA construye.</em>
+              </span>
+            </p>
+            <p className="band-sub">Nos vemos en la Sesión 2.</p>
+          </div>
+        </section>
       </main>
 
       <footer className="footer">
+        <Wave position="top" />
         <div className="container footer-inner">
           <span className="brand">
             <span className="brand-cup">
@@ -688,6 +775,35 @@ export default function App() {
           </span>
           <p className="footer-text">
             Curso <strong>AI Web &amp; App Development · Vibe Coding</strong> · American Space · Sesión 1 de 4
+          </p>
+          <p className="footer-credits">
+            Fotos en{' '}
+            <a href="https://unsplash.com" target="_blank" rel="noreferrer">
+              Unsplash
+            </a>
+            :{' '}
+            {CREDITS.photos.map((c, i) => (
+              <span key={c.name}>
+                {i > 0 && ', '}
+                <a href={c.url} target="_blank" rel="noreferrer">
+                  {c.name}
+                </a>
+              </span>
+            ))}
+            . Animaciones en{' '}
+            <a href="https://lottiefiles.com" target="_blank" rel="noreferrer">
+              LottieFiles
+            </a>
+            :{' '}
+            {CREDITS.animations.map((c, i) => (
+              <span key={c.name}>
+                {i > 0 && ' y '}
+                <a href={c.url} target="_blank" rel="noreferrer">
+                  {c.name}
+                </a>
+              </span>
+            ))}
+            .
           </p>
         </div>
       </footer>
